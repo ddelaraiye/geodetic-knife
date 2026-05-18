@@ -7,9 +7,6 @@
     }
   ],
   "routes": [
-    { "src": "/api/(.*)", "dest": "/api/index.py" },
-    { "src": "/(.*\\.(html|css|js|json|png|ico|svg|woff2?|webmanifest))", "dest": "/public/$1" },
-    { "src": "/icons/(.*)", "dest": "/public/icons/$1" },
-    { "src": "/(.*)", "dest": "/public/index.html" }
+    { "src": "/api/(.*)", "dest": "/api/index.py" }
   ]
 }

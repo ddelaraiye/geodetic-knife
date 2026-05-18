@@ -1,15 +1,11 @@
 import json
 import math
-from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask, request, jsonify
 from pyproj import CRS, Transformer
 
-app = Flask(__name__,
-    template_folder='../public',
-    static_folder='../public')
+app = Flask(__name__)
 
-# ═══════════════════════════════════════════════════════════════════════
-# CONSTANTS
-# ═══════════════════════════════════════════════════════════════════════
+# -- CONSTANTS --
 GOLD_COAST_FOOT = 0.304799710181509
 GMG_FALSE_EASTING = 900000 * GOLD_COAST_FOOT
 GNG_FALSE_EASTING = 900000
@@ -34,27 +30,14 @@ ACCURACY_META = {
     "grid_accuracy": "exact arithmetic conversion"
 }
 
-# ═══════════════════════════════════════════════════════════════════════
-# SERVE STATIC FILES (Vercel)
-# ═══════════════════════════════════════════════════════════════════════
-@app.route('/')
-def index():
-    return send_from_directory('../public', 'index.html')
-
-@app.route('/<path:path>')
-def static_files(path):
-    return send_from_directory('../public', path)
-
-# ═══════════════════════════════════════════════════════════════════════
-# CONVERSION HELPERS
-# ═══════════════════════════════════════════════════════════════════════
+# -- CONVERSION HELPERS --
 def wgs84_to_gmg_grid(lat, lon):
     e, n = wgs84_to_gmg.transform(lon, lat)
     return {"easting": e, "northing": n}
 
 def wgs84_to_gng_grid(lat, lon):
     gmg = wgs84_to_gmg_grid(lat, lon)
-    return gmg_to_gng_grid(gmg["easting"], gmg["northing"])
+    return gng_to_gmg_grid(gmg["easting"], gmg["northing"])
 
 def gmg_to_wgs84_geo(easting, northing):
     lon, lat = gmg_to_wgs84.transform(easting, northing)
@@ -80,9 +63,7 @@ def build_full_result(gng, gmg, wgs84):
         "accuracy": ACCURACY_META
     }
 
-# ═══════════════════════════════════════════════════════════════════════
-# API: SINGLE CONVERSION
-# ═══════════════════════════════════════════════════════════════════════
+# -- API: SINGLE CONVERSION --
 @app.route("/api/convert", methods=["POST"])
 def convert():
     data = request.get_json()
@@ -97,7 +78,7 @@ def convert():
             lat = float(data["lat"])
             lon = float(data["lon"])
             gmg = wgs84_to_gmg_grid(lat, lon)
-            gng = gmg_to_gng_grid(gmg["easting"], gmg["northing"])
+            gng = gmg_to_gmg_grid(gmg["easting"], gmg["northing"])
             return jsonify(build_full_result(gng, gmg, {"lat": lat, "lon": lon}))
 
         elif mode == "GNG_GMG":
@@ -110,7 +91,7 @@ def convert():
             else:
                 gng = gmg_to_gng_grid(e, n)
                 gmg = {"easting": e, "northing": n}
-                wgs = gng_to_wgs84_geo(e, n)
+                wgs = gmg_to_wgs84_geo(e, n)
             return jsonify(build_full_result(gng, gmg, wgs))
 
         elif mode == "GRID_TO_WGS84":
@@ -131,9 +112,7 @@ def convert():
     except Exception as exc:
         return jsonify({"error": str(exc)}), 400
 
-# ═══════════════════════════════════════════════════════════════════════
-# API: BATCH CONVERSION
-# ═══════════════════════════════════════════════════════════════════════
+# -- API: BATCH CONVERSION --
 @app.route("/api/convert_batch", methods=["POST"])
 def convert_batch():
     data = request.get_json()
@@ -153,7 +132,7 @@ def convert_batch():
                 lat = float(pt["lat"])
                 lon = float(pt["lon"])
                 gmg = wgs84_to_gmg_grid(lat, lon)
-                gng = gmg_to_gng_grid(gmg["easting"], gmg["northing"])
+                gng = gmg_to_gmg_grid(gmg["easting"], gmg["northing"])
                 results.append(build_full_result(gng, gmg, {"lat": lat, "lon": lon}))
 
             elif mode == "GNG_GMG":
@@ -190,9 +169,7 @@ def convert_batch():
 
     return jsonify({"results": results, "errors": errors})
 
-# ═══════════════════════════════════════════════════════════════════════
-# API: ELEVATION (Feature 1)
-# ═══════════════════════════════════════════════════════════════════════
+# -- API: ELEVATION --
 @app.route("/api/elevation", methods=["GET"])
 def elevation():
     try:
@@ -214,9 +191,7 @@ def elevation():
     except Exception as exc:
         return jsonify({"elevation": None, "error": str(exc)})
 
-# ═══════════════════════════════════════════════════════════════════════
-# API: REVERSE GEOCODE (Feature 2)
-# ═══════════════════════════════════════════════════════════════════════
+# -- API: REVERSE GEOCODE --
 @app.route("/api/geocode", methods=["GET"])
 def geocode():
     try:
@@ -240,9 +215,7 @@ def geocode():
     except Exception as exc:
         return jsonify({"display_name": "", "region": "", "district": "", "error": str(exc)})
 
-# ═══════════════════════════════════════════════════════════════════════
-# API: AZIMUTH & DISTANCE (Feature 9) - Vincenty Inverse
-# ═══════════════════════════════════════════════════════════════════════
+# -- API: AZIMUTH & DISTANCE (Vincenty Inverse) --
 @app.route("/api/azimuth_distance", methods=["POST"])
 def azimuth_distance():
     data = request.get_json()
@@ -258,7 +231,6 @@ def azimuth_distance():
         return jsonify({"error": "Provide lat1, lon1, lat2, lon2"}), 400
 
     try:
-        # WGS84 ellipsoid
         a = 6378137.0
         f = 1 / 298.257223563
         b = a * (1 - f)
@@ -309,14 +281,12 @@ def azimuth_distance():
         )
         dist_m = b * A_coeff * (sigma - delta_sigma)
 
-        # Initial bearing
         bearing1 = math.degrees(math.atan2(
             cosU2 * sin_lam,
             cosU1 * sinU2 - sinU1 * cosU2 * cos_lam
         ))
         bearing1 = (bearing1 + 360) % 360
 
-        # Final bearing
         bearing2 = math.degrees(math.atan2(
             cosU1 * sin_lam,
             -sinU1 * cosU2 + cosU1 * sinU2 * cos_lam
@@ -334,12 +304,6 @@ def azimuth_distance():
     except Exception as exc:
         return jsonify({"error": str(exc)}), 400
 
-# ═══════════════════════════════════════════════════════════════════════
-# LOCAL DEV
-# ═══════════════════════════════════════════════════════════════════════
+# -- LOCAL DEV --
 if __name__ == "__main__":
-    print("=" * 50)
-    print("  Ghana Geodetic Tool")
-    print("  http://localhost:5000")
-    print("=" * 50)
     app.run(host="0.0.0.0", port=5000, debug=True)
