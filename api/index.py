@@ -1,4 +1,4 @@
-import json
+﻿import json
 import math
 from flask import Flask, request, jsonify
 from pyproj import CRS, Transformer
@@ -78,7 +78,7 @@ def convert():
             lat = float(data["lat"])
             lon = float(data["lon"])
             gmg = wgs84_to_gmg_grid(lat, lon)
-            gng = gmg_to_gmg_grid(gmg["easting"], gmg["northing"])
+            gng = gmg_to_gng_grid(gmg["easting"], gmg["northing"])
             return jsonify(build_full_result(gng, gmg, {"lat": lat, "lon": lon}))
 
         elif mode == "GNG_GMG":
@@ -132,7 +132,7 @@ def convert_batch():
                 lat = float(pt["lat"])
                 lon = float(pt["lon"])
                 gmg = wgs84_to_gmg_grid(lat, lon)
-                gng = gmg_to_gmg_grid(gmg["easting"], gmg["northing"])
+                gng = gmg_to_gng_grid(gmg["easting"], gmg["northing"])
                 results.append(build_full_result(gng, gmg, {"lat": lat, "lon": lon}))
 
             elif mode == "GNG_GMG":
