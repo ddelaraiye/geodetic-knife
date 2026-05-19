@@ -456,6 +456,10 @@ input.invalid:focus{box-shadow:0 0 0 3px var(--err-bg)!important}
 .file-drop input[type=file]{display:none}
 .file-drop-icon{font-size:2rem;margin-bottom:6px;opacity:.6}
 .file-drop-text{font-size:.82rem;color:var(--muted)}
+
+.export-btn{padding:4px 10px;border-radius:var(--radius-sm,6px);border:1px solid var(--s2,#333);background:var(--t1,#1a1a2e);color:var(--t3,#ccc);font-size:12px;cursor:pointer;white-space:nowrap}
+.export-btn:active{opacity:.6}
+.export-bar{display:flex;gap:6px;flex-wrap:wrap}
 </style>
 </head>
 <body class="themed">
@@ -1304,6 +1308,141 @@ window.installPWA = function() {
 };
 
 /* ── GO ── */
+
+
+/* ── CSV Export / Import (Geodetic Knife) ── */
+function downloadCSV(csv, name) {
+  var b = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(b);
+  a.download = name + '-' + Date.now() + '.csv';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+function exportResultCSV() {
+  var c = document.getElementById('resultsCard');
+  if (!c) return toast('No result card', 'warn');
+  var rows = c.querySelectorAll('.result-row');
+  if (!rows.length) return toast('No results to export', 'warn');
+  var csv = 'Label,Value
+';
+  rows.forEach(function(r) {
+    var l = r.querySelector('.result-label'), v = r.querySelector('.result-val');
+    if (l && v) csv += '"' + l.textContent.trim() + '","' + v.textContent.trim() + '"
+';
+  });
+  downloadCSV(csv, 'geodetic-result');
+  toast('Result CSV exported!', 'ok');
+}
+
+function exportBatchCSV() {
+  var b = document.getElementById('batchResultsBody');
+  if (!b) return toast('No batch results', 'warn');
+  var rows = b.querySelectorAll('.result-row');
+  if (!rows.length) return toast('No batch results to export', 'warn');
+  var csv = 'Label,Value
+';
+  rows.forEach(function(r) {
+    var l = r.querySelector('.result-label'), v = r.querySelector('.result-val');
+    if (l && v) csv += '"' + l.textContent.trim() + '","' + v.textContent.trim() + '"
+';
+  });
+  downloadCSV(csv, 'geodetic-batch');
+  toast('Batch CSV exported!', 'ok');
+}
+
+window.handleCSVFile = function(file) {
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var text = e.target.result;
+    var lines = text.split('
+').filter(function(l) { return l.trim(); });
+    if (lines.length < 2) return toast('CSV needs header + data', 'warn');
+    var ta = document.querySelector('[data-page="batch"] textarea')
+           || document.querySelector('textarea');
+    if (ta) {
+      ta.value = text;
+      ta.dispatchEvent(new Event('input', {bubbles: true}));
+      toast('CSV loaded: ' + lines.length + ' rows', 'ok');
+    } else {
+      toast('No input field found', 'warn');
+    }
+  };
+  reader.readAsText(file);
+};
+
+/* ── Auto-add CSV Export buttons (MutationObserver) ── */
+(function() {
+  function wire(cardId, label, fn) {
+    var card = document.getElementById(cardId);
+    if (!card || card.querySelector('.export-csv-btn')) return;
+    if (!card.querySelectorAll('.result-row').length) return;
+    var hdr = card.querySelector('.card-header');
+    if (!hdr) return;
+    var bar = hdr.querySelector('.export-bar');
+    if (!bar) {
+      bar = document.createElement('div');
+      bar.className = 'export-bar';
+      hdr.appendChild(bar);
+    }
+    var btn = document.createElement('button');
+    btn.className = 'export-btn export-csv-btn';
+    btn.textContent = label;
+    btn.onclick = fn;
+    bar.appendChild(btn);
+  }
+  function scan() {
+    wire('resultsCard', 'CSV', exportResultCSV);
+    wire('batchResultsCard', 'CSV', exportBatchCSV);
+  }
+  var obs = new MutationObserver(scan);
+  document.addEventListener('DOMContentLoaded', function() {
+    obs.observe(document.body, {childList: true, subtree: true});
+    scan();
+    setInterval(scan, 2000);
+  });
+})();
+
+/* ── Wire CSV import file-drops ── */
+(function() {
+  function setup() {
+    document.querySelectorAll('.file-drop').forEach(function(el) {
+      if (el._csvReady) return;
+      el._csvReady = 1;
+      el.addEventListener('dragover', function(e) { e.preventDefault(); el.classList.add('dragover'); });
+      el.addEventListener('dragleave', function() { el.classList.remove('dragover'); });
+      el.addEventListener('drop', function(e) {
+        e.preventDefault(); el.classList.remove('dragover');
+        if (e.dataTransfer.files.length) handleCSVFile(e.dataTransfer.files[0]);
+      });
+      var inp = el.querySelector('input[type="file"]');
+      if (inp) {
+        inp.addEventListener('change', function() {
+          if (inp.files.length) handleCSVFile(inp.files[0]);
+        });
+      }
+      el.addEventListener('click', function(e) {
+        if (e.target.tagName !== 'INPUT') {
+          var i = el.querySelector('input[type="file"]');
+          if (i) i.click();
+        }
+      });
+    });
+  }
+  var iv = setInterval(function() {
+    setup();
+    if (document.querySelectorAll('.file-drop').length) {
+      var ready = true;
+      document.querySelectorAll('.file-drop').forEach(function(el) {
+        if (!el._csvReady) ready = false;
+      });
+      if (ready) clearInterval(iv);
+    }
+  }, 500);
+})();
+
 init();
 
 })();
