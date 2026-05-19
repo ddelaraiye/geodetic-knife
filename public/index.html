@@ -171,46 +171,79 @@ a{color:var(--accent);text-decoration:none}
 /* ─── BOOKMARK NAME INPUT ─── */
 .bm-name-input{background:var(--bg);border:1px solid var(--accent);color:var(--text);padding:.15rem .3rem;border-radius:3px;font-size:.75rem;font-family:var(--font-ui);width:140px;outline:none}
 
-/* Calibration Panel Styles */
-#calContainer{display:none;padding:16px}
+/* ═══════ CALIBRATION MODULE ═══════ */
+#calContainer{display:none;padding:0}
 #calContainer.active{display:block}
-.cal-section{background:var(--card);border-radius:8px;padding:12px;margin-bottom:12px}
-.cal-section h4{margin:0 0 8px;color:var(--accent);font-size:14px}
-.cal-info{font-size:12px;color:var(--muted);margin-bottom:12px;line-height:1.5}
-.cp-table{width:100%;border-collapse:collapse;font-size:13px}
-.cp-table th{background:var(--border);padding:6px 4px;font-weight:600;text-align:center;white-space:nowrap}
-.cp-table td{padding:3px 2px;text-align:center;border-bottom:1px solid var(--border)}
-.cp-table input{width:100%;min-width:70px;background:var(--bg);color:var(--fg);border:1px solid var(--border);padding:4px 6px;border-radius:4px;font-size:12px}
-.cp-table .rm-btn{background:#5a2020;color:#faa;border:1px solid #733;padding:2px 8px;border-radius:4px;cursor:pointer;font-size:11px}
-.cp-table .rm-btn:hover{background:#733}
-.cal-actions{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
-.cal-btn{padding:8px 16px;border:none;border-radius:6px;cursor:pointer;font-size:13px;font-weight:600;transition:background .2s}
-.cal-btn.primary{background:var(--accent);color:#fff}
-.cal-btn.primary:hover{filter:brightness(1.2)}
+.cal-hero{background:linear-gradient(135deg,var(--card) 0%,#1a2a1a 100%);border-radius:12px;padding:24px;margin-bottom:16px;text-align:center;position:relative;overflow:hidden;border:1px solid var(--border)}
+.cal-hero::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#3a6b3a,#5A8A5A,#7ab87a,#5A8A5A,#3a6b3a)}
+.cal-hero h3{margin:0 0 4px;font-size:18px;font-weight:700;color:#cde6cd;letter-spacing:0.5px}
+.cal-hero .sub{font-size:12px;color:var(--muted);margin:0 0 16px}
+/* Balance Scale SVG */
+.cal-scale-wrap{display:flex;justify-content:center;margin-bottom:16px}
+.cal-scale-wrap svg{width:120px;height:70px;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.3))}
+.cal-scale-wrap .pan-left,.cal-scale-wrap .pan-right{animation:cal-swing 3s ease-in-out infinite alternate}
+@keyframes cal-swing{0%{transform:rotate(-2deg)}100%{transform:rotate(2deg)}}
+.cal-scale-labels{display:flex;justify-content:space-around;max-width:220px;margin:0 auto}
+.cal-scale-labels span{font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:1px}
+.cal-status-row{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:12px}
+.cal-status{display:inline-flex;align-items:center;gap:5px;padding:4px 14px;border-radius:20px;font-size:12px;font-weight:600}
+.cal-status .dot{width:7px;height:7px;border-radius:50%}
+.cal-status.inactive{background:#2a2a1a;color:#aa5}
+.cal-status.inactive .dot{background:#aa5}
+.cal-status.active{background:#1a3a1a;color:#5f5}
+.cal-status.active .dot{background:#5f5;box-shadow:0 0 6px #5f5}
+/* Target selector */
+.cal-target-row{display:flex;align-items:center;justify-content:center;gap:10px;margin:10px 0 0;font-size:13px;color:var(--fg)}
+.cal-target-row select{background:var(--bg);color:var(--fg);border:1px solid var(--border);padding:5px 10px;border-radius:6px;font-size:12px;cursor:pointer}
+/* Sections */
+.cal-card{background:var(--card);border-radius:10px;padding:14px;margin-bottom:14px;border:1px solid var(--border)}
+.cal-card h4{margin:0 0 10px;font-size:13px;font-weight:700;color:#8ab88a;display:flex;align-items:center;gap:6px}
+.cal-card h4 .icon{font-size:15px}
+/* Control point table */
+.cp-table-wrap{overflow-x:auto;border-radius:6px;border:1px solid var(--border)}
+.cp-table{width:100%;border-collapse:collapse;font-size:12px}
+.cp-table th{background:#1a2a1a;color:#8ab88a;padding:7px 5px;font-weight:600;text-align:center;white-space:nowrap;font-size:11px;text-transform:uppercase;letter-spacing:0.5px}
+.cp-table td{padding:4px 3px;text-align:center;border-top:1px solid var(--border)}
+.cp-table tr:nth-child(even) td{background:rgba(255,255,255,0.015)}
+.cp-table input{width:100%;min-width:65px;background:var(--bg);color:var(--fg);border:1px solid var(--border);padding:5px 6px;border-radius:5px;font-size:12px;text-align:center;transition:border-color .2s}
+.cp-table input:focus{border-color:#5A8A5A;outline:none}
+.cp-table .rm-btn{background:transparent;color:#855;border:1px solid #855;padding:3px 8px;border-radius:5px;cursor:pointer;font-size:12px;transition:all .2s}
+.cp-table .rm-btn:hover{background:#5a2020;color:#faa;border-color:#733}
+/* Buttons */
+.cal-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.cal-btn{padding:9px 18px;border:none;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;transition:all .2s;display:inline-flex;align-items:center;gap:6px;letter-spacing:0.3px}
+.cal-btn.primary{background:linear-gradient(135deg,#3a6b3a,#5A8A5A);color:#fff;box-shadow:0 2px 8px rgba(90,138,90,0.3)}
+.cal-btn.primary:hover{box-shadow:0 4px 14px rgba(90,138,90,0.5);transform:translateY(-1px)}
 .cal-btn.secondary{background:var(--border);color:var(--fg)}
-.cal-btn.secondary:hover{filter:brightness(1.3)}
-.cal-btn.danger{background:#5a2020;color:#faa}
-.cal-btn.danger:hover{background:#733}
-.cal-target{margin-bottom:12px;display:flex;align-items:center;gap:8px;font-size:13px}
-.cal-target select{background:var(--bg);color:var(--fg);border:1px solid var(--border);padding:4px 8px;border-radius:4px}
-.cal-results{display:none}
+.cal-btn.secondary:hover{background:#3a3a3a;transform:translateY(-1px)}
+.cal-btn.danger{background:#3a1a1a;color:#e88;border:1px solid #633}
+.cal-btn.danger:hover{background:#5a2020;transform:translateY(-1px)}
+/* Results area */
+.cal-results{display:none;margin-top:14px}
 .cal-results.visible{display:block}
-.cal-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;margin-bottom:12px}
-.cal-stat{background:var(--card);border-radius:6px;padding:10px;text-align:center}
-.cal-stat .val{font-size:18px;font-weight:700;color:var(--accent)}
-.cal-stat .lbl{font-size:11px;color:var(--muted);margin-top:2px}
-.cal-params{margin-bottom:12px}
+.cal-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.cal-stat{background:linear-gradient(135deg,var(--card),#1a2a1a);border:1px solid var(--border);border-radius:10px;padding:14px 10px;text-align:center}
+.cal-stat .val{font-size:20px;font-weight:800;color:#5A8A5A}
+.cal-stat .val.good{color:#5f5}
+.cal-stat .val.warn{color:#ee5}
+.cal-stat .val.bad{color:#e55}
+.cal-stat .lbl{font-size:10px;color:var(--muted);margin-top:4px;text-transform:uppercase;letter-spacing:0.5px}
+.cal-params{overflow-x:auto}
 .cal-params table{width:100%;border-collapse:collapse;font-size:12px}
-.cal-params th,.cal-params td{padding:5px 8px;border:1px solid var(--border);text-align:center}
+.cal-params th{background:#1a2a1a;color:#8ab88a;padding:6px 10px;text-align:center;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;border:1px solid var(--border)}
+.cal-params td{padding:6px 10px;text-align:center;border:1px solid var(--border);font-family:'Courier New',monospace;font-size:12px}
 .cal-residuals{overflow-x:auto}
 .cal-residuals table{width:100%;border-collapse:collapse;font-size:11px}
-.cal-residuals th,.cal-residuals td{padding:4px 6px;border:1px solid var(--border);text-align:center}
-.cal-residuals .good{color:#5a5}
-.cal-residuals .warn{color:#aa5}
-.cal-residuals .bad{color:#a55}
-.cal-status{display:inline-block;padding:3px 10px;border-radius:12px;font-size:12px;font-weight:600}
-.cal-status.active{background:#2a5a2a;color:#5f5}
-.cal-status.inactive{background:#5a5a2a;color:#aa5}
+.cal-residuals th{background:#1a2a1a;color:#8ab88a;padding:5px 6px;text-align:center;font-size:10px;text-transform:uppercase;letter-spacing:0.5px;border:1px solid var(--border);white-space:nowrap}
+.cal-residuals td{padding:4px 6px;text-align:center;border:1px solid var(--border);white-space:nowrap}
+.cal-residuals .good{color:#5f5;font-weight:600}
+.cal-residuals .warn{color:#ee5;font-weight:600}
+.cal-residuals .bad{color:#e55;font-weight:600}
+@media(max-width:600px){
+  .cal-stats{grid-template-columns:repeat(2,1fr)}
+  .cal-hero{padding:16px}
+  .cal-btn{padding:8px 12px;font-size:11px}
+}
 </style>
 </head>
 <body>
@@ -285,7 +318,7 @@ a{color:var(--accent);text-decoration:none}
   <button class="tab-btn active" data-tab="wgs84_to_grid">WGS 84 &rarr; Grid</button>
   <button class="tab-btn" data-tab="gng_gmg">GNG &harr; GMG</button>
   <button class="tab-btn" data-tab="grid_to_wgs84">Grid &rarr; WGS 84</button>
-    <button class="tab-btn" onclick="switchTab('calibration')">&#9881; Calibrate</button>
+    <button class="tab-btn" onclick="switchTab('calibration')">&#9878; Calibrate</button>
 
 </div>
 
@@ -504,49 +537,72 @@ a{color:var(--accent);text-decoration:none}
 
 
 <div id="calContainer" class="panel">
-  <div class="cal-section">
-    <h4>Local Calibration &mdash; 7-Parameter Helmert Transformation</h4>
-    <div class="cal-info">
-      Provide pairs of known coordinates (WGS84 lat/lon + Grid easting/northing) to derive a custom
-      7-parameter Helmert transformation via weighted least-squares on ECEF differences.<br>
-      Minimum <b>3 points</b> required. Recommended <b>5&ndash;10+</b> for optimal accuracy.
-      <br><br>
-      Calibration status: <span id="calStatusBadge" class="cal-status inactive">Not calibrated</span>
+  <div class="cal-hero">
+    <h3>&#9878; Local Calibration</h3>
+    <div class="sub">7-Parameter Helmert Transformation &bull; Least-Squares Solver</div>
+    <div class="cal-scale-wrap">
+      <svg viewBox="0 0 120 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <line x1="60" y1="5" x2="60" y2="35" stroke="#5A8A5A" stroke-width="2"/>
+        <polygon points="56,35 64,35 60,30" fill="#5A8A5A"/>
+        <rect x="54" y="34" width="12" height="4" rx="1" fill="#5A8A5A"/>
+        <g class="pan-left">
+          <line x1="15" y1="28" x2="105" y2="28" stroke="#8ab88a" stroke-width="1.5"/>
+          <line x1="20" y1="28" x2="20" y2="45" stroke="#8ab88a" stroke-width="1"/>
+          <line x1="10" y1="45" x2="30" y2="45" stroke="#8ab88a" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="10" y1="45" x2="15" y2="50" stroke="#8ab88a" stroke-width="1" stroke-linecap="round"/>
+          <line x1="30" y1="45" x2="25" y2="50" stroke="#8ab88a" stroke-width="1" stroke-linecap="round"/>
+        </g>
+        <g class="pan-right">
+          <line x1="100" y1="28" x2="100" y2="45" stroke="#8ab88a" stroke-width="1"/>
+          <line x1="90" y1="45" x2="110" y2="45" stroke="#8ab88a" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="90" y1="45" x2="95" y2="50" stroke="#8ab88a" stroke-width="1" stroke-linecap="round"/>
+          <line x1="110" y1="45" x2="105" y2="50" stroke="#8ab88a" stroke-width="1" stroke-linecap="round"/>
+        </g>
+        <rect x="52" y="4" width="16" height="3" rx="1.5" fill="#8ab88a"/>
+      </svg>
     </div>
-    <div class="cal-target">
+    <div class="cal-scale-labels">
+      <span>WGS 84</span>
+      <span style="color:#5A8A5A;font-size:11px">&#8644;</span>
+      <span>GNG / GMG</span>
+    </div>
+    <div class="cal-status-row">
+      <span style="font-size:12px;color:var(--muted)">Status:</span>
+      <span id="calStatusBadge" class="cal-status inactive"><span class="dot"></span>Not calibrated</span>
+    </div>
+    <div class="cal-target-row">
       <label>Target Grid:</label>
       <select id="calTarget">
         <option value="GNG" selected>GNG (Gold Coast Feet)</option>
         <option value="GMG">GMG (Ghana Metre Grid)</option>
       </select>
-      <span style="font-size:11px;color:var(--muted)">&mdash; Grid system of your known easting/northing values</span>
     </div>
   </div>
-  <div class="cal-section">
-    <h4>Control Points</h4>
-    <div style="overflow-x:auto">
+  <div class="cal-card">
+    <h4><span class="icon">&#128203;</span> Control Points <span style="font-weight:400;color:var(--muted);font-size:11px">&mdash; min 3, recommended 5&ndash;10+</span></h4>
+    <div class="cp-table-wrap">
       <table class="cp-table" id="cpTable">
         <thead><tr><th>#</th><th>Latitude</th><th>Longitude</th><th>H (m)</th><th>Easting</th><th>Northing</th><th></th></tr></thead>
         <tbody id="cpBody"></tbody>
       </table>
     </div>
     <div class="cal-actions">
-      <button class="cal-btn primary" onclick="addCP()">+ Add Point</button>
-      <button class="cal-btn secondary" onclick="loadSampleCP()">Load Sample (Accra)</button>
-      <button class="cal-btn secondary" onclick="loadCPFile()">Load CSV File</button>
+      <button class="cal-btn secondary" onclick="addCP()">+ Add Point</button>
+      <button class="cal-btn secondary" onclick="loadSampleCP()">&#128197; Load Sample</button>
+      <button class="cal-btn secondary" onclick="loadCPFile()">&#128196; Load CSV</button>
       <input type="file" id="cpFileInput" accept=".csv,.txt,.tsv" style="display:none" onchange="handleCPFile(event)">
     </div>
   </div>
-  <div class="cal-section cal-actions" style="padding:12px">
+  <div class="cal-actions" style="justify-content:center;padding:4px 0">
     <button class="cal-btn primary" onclick="doCalibrate()">&#128295; Run Calibration</button>
-    <button class="cal-btn secondary" onclick="applyCal()">&#9989; Apply to Conversions</button>
-    <button class="cal-btn danger" onclick="clearCal()">&#128465; Clear Calibration</button>
-    <button class="cal-btn secondary" onclick="exportCal()">&#128229; Export Results</button>
+    <button class="cal-btn secondary" onclick="applyCal()">&#9989; Apply</button>
+    <button class="cal-btn danger" onclick="clearCal()">&#128465; Clear</button>
+    <button class="cal-btn secondary" onclick="exportCal()">&#128229; Export</button>
   </div>
   <div id="calResults" class="cal-results">
-    <div class="cal-section"><h4>Statistics</h4><div class="cal-stats" id="calStats"></div></div>
-    <div class="cal-section"><h4>7-Parameter Helmert Coefficients</h4><div class="cal-params" id="calParams"></div></div>
-    <div class="cal-section"><h4>Residuals</h4><div class="cal-residuals" id="calResiduals"></div></div>
+    <div class="cal-card"><h4><span class="icon">&#128200;</span> Statistics</h4><div class="cal-stats" id="calStats"></div></div>
+    <div class="cal-card"><h4><span class="icon">&#128290;</span> 7-Parameter Helmert Coefficients</h4><div class="cal-params" id="calParams"></div></div>
+    <div class="cal-card"><h4><span class="icon">&#128202;</span> Residual Analysis</h4><div class="cal-residuals" id="calResiduals"></div></div>
   </div>
 </div>
 
@@ -1482,7 +1538,7 @@ if('serviceWorker' in navigator){
 
 })();
 
-/* ========== Calibration Module ========== */
+/* ═══════ CALIBRATION ENGINE ═══════ */
 var calState = {towgs84:null, params:null, stats:null};
 (function initCal(){
   var saved = localStorage.getItem('geodetic_cal');
@@ -1494,12 +1550,13 @@ var calState = {towgs84:null, params:null, stats:null};
 function updateCalBadge(){
   var b = document.getElementById('calStatusBadge');
   if(!b) return;
-  if(calState.towgs84){
+  if(calState && calState.towgs84){
     b.className = 'cal-status active';
-    b.textContent = 'Active \u2014 ' + calState.stats.rms_combined.toFixed(3) + ' m RMS';
+    var rms = calState.stats ? calState.stats.rms_combined : '?';
+    b.innerHTML = '<span class="dot"></span>Active &mdash; ' + rms + ' m RMS';
   } else {
     b.className = 'cal-status inactive';
-    b.textContent = 'Not calibrated';
+    b.innerHTML = '<span class="dot"></span>Not calibrated';
   }
 }
 var cpCounter = 0;
@@ -1540,9 +1597,8 @@ function handleCPFile(ev){
     cpCounter = 0;
     lines.forEach(function(line){
       var cols = line.trim().split(delim).map(function(s){ return s.trim(); });
-      if(cols.length >= 4 && !isNaN(parseFloat(cols[0])) && !isNaN(parseFloat(cols[1]))){
+      if(cols.length >= 4 && !isNaN(parseFloat(cols[0])) && !isNaN(parseFloat(cols[1])))
         addCP(cols[0], cols[1], cols[2] || '0', cols[3], cols[4] || '');
-      }
     });
   };
   reader.readAsText(file); ev.target.value = '';
@@ -1552,129 +1608,129 @@ function doCalibrate(){
   if(rows.length < 3){ alert('Need at least 3 control points'); return; }
   var pts = [];
   rows.forEach(function(r){
-    var lat = r.querySelector('.cp-lat').value;
-    var lon = r.querySelector('.cp-lon').value;
-    var h   = r.querySelector('.cp-h').value;
-    var e   = r.querySelector('.cp-e').value;
-    var n   = r.querySelector('.cp-n').value;
+    var lat=r.querySelector('.cp-lat').value, lon=r.querySelector('.cp-lon').value;
+    var h=r.querySelector('.cp-h').value, e=r.querySelector('.cp-e').value, n=r.querySelector('.cp-n').value;
     if(lat && lon && e && n && !isNaN(parseFloat(lat)))
       pts.push({lat:parseFloat(lat),lon:parseFloat(lon),h:parseFloat(h)||0,easting:parseFloat(e),northing:parseFloat(n)});
   });
   if(pts.length < 3){ alert('Need at least 3 valid control points'); return; }
   var tgt = document.getElementById('calTarget').value;
-  fetch('/api/calibrate',{
-    method:'POST',headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({points:pts,target:tgt})
-  }).then(function(r){return r.json();}).then(function(d){
-    if(d.error){alert('Calibration error: '+d.error);return;}
-    calState={towgs84:d.towgs84,params:d.params,stats:d.statistics};
-    showCalResults(d);
-  }).catch(function(e){alert('Network error: '+e.message);});
+  fetch('/api/calibrate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({points:pts,target:tgt})})
+    .then(function(r){return r.json();})
+    .then(function(d){
+      if(d.error){ alert('Calibration error: ' + d.error); return; }
+      calState = {towgs84:d.towgs84, params:d.params, stats:d.statistics};
+      showCalResults(d);
+    }).catch(function(e){ alert('Network error: ' + e.message); });
 }
 function showCalResults(d){
   document.getElementById('calResults').classList.add('visible');
-  var s=d.statistics;
-  document.getElementById('calStats').innerHTML=
-    '<div class="cal-stat"><div class="val">'+s.num_points+'</div><div class="lbl">Points Used</div></div>'
-    +'<div class="cal-stat"><div class="val">'+s.rms_e.toFixed(4)+' m</div><div class="lbl">RMS Easting</div></div>'
-    +'<div class="cal-stat"><div class="val">'+s.rms_n.toFixed(4)+' m</div><div class="lbl">RMS Northing</div></div>'
-    +'<div class="cal-stat"><div class="val">'+s.rms_combined.toFixed(4)+' m</div><div class="lbl">RMS Combined</div></div>'
-    +'<div class="cal-stat"><div class="val">'+s.scale_ppm.toFixed(2)+'</div><div class="lbl">Scale (ppm)</div></div>'
-    +'<div class="cal-stat"><div class="val">'+s.degrees_of_freedom+'</div><div class="lbl">DoF</div></div>';
-  var p=d.params;
-  var a2s=function(r){return(r*180/Math.PI*3600).toFixed(4);};
-  document.getElementById('calParams').innerHTML=
+  var s = d.statistics;
+  var rmsCls = s.rms_combined < 0.1 ? 'good' : s.rms_combined < 0.5 ? 'warn' : 'bad';
+  document.getElementById('calStats').innerHTML =
+    '<div class="cal-stat"><div class="val">' + s.num_points + '</div><div class="lbl">Points</div></div>'
+    + '<div class="cal-stat"><div class="val ' + rmsCls + '">' + s.rms_combined.toFixed(4) + '</div><div class="lbl">RMS Combined (m)</div></div>'
+    + '<div class="cal-stat"><div class="val">' + s.rms_e.toFixed(4) + '</div><div class="lbl">RMS Easting (m)</div></div>'
+    + '<div class="cal-stat"><div class="val">' + s.rms_n.toFixed(4) + '</div><div class="lbl">RMS Northing (m)</div></div>'
+    + '<div class="cal-stat"><div class="val">' + s.scale_ppm.toFixed(2) + '</div><div class="lbl">Scale (ppm)</div></div>'
+    + '<div class="cal-stat"><div class="val">' + s.degrees_of_freedom + '</div><div class="lbl">DoF</div></div>';
+  var p = d.params;
+  var a2s = function(r){ return (r*180/Math.PI*3600).toFixed(4); };
+  document.getElementById('calParams').innerHTML =
     '<table><tr><th>Parameter</th><th>Value</th><th>Unit</th></tr>'
-    +'<tr><td>TX</td><td>'+p.tx.toFixed(4)+'</td><td>metres</td></tr>'
-    +'<tr><td>TY</td><td>'+p.ty.toFixed(4)+'</td><td>metres</td></tr>'
-    +'<tr><td>TZ</td><td>'+p.tz.toFixed(4)+'</td><td>metres</td></tr>'
-    +'<tr><td>RX</td><td>'+a2s(p.rx)+'</td><td>arc-seconds</td></tr>'
-    +'<tr><td>RY</td><td>'+a2s(p.ry)+'</td><td>arc-seconds</td></tr>'
-    +'<tr><td>RZ</td><td>'+a2s(p.rz)+'</td><td>arc-seconds</td></tr>'
-    +'<tr><td>Scale</td><td>'+(p.scale*1e6).toFixed(4)+'</td><td>ppm</td></tr></table>';
-  var rh='<table><tr><th>#</th><th>Lat</th><th>Lon</th><th>E Act</th><th>N Act</th><th>E Pred</th><th>N Pred</th><th>dE(m)</th><th>dN(m)</th><th>d(m)</th></tr>';
+    + '<tr><td>TX</td><td>' + p.tx.toFixed(4) + '</td><td>metres</td></tr>'
+    + '<tr><td>TY</td><td>' + p.ty.toFixed(4) + '</td><td>metres</td></tr>'
+    + '<tr><td>TZ</td><td>' + p.tz.toFixed(4) + '</td><td>metres</td></tr>'
+    + '<tr><td>RX</td><td>' + a2s(p.rx) + '</td><td>arc-seconds</td></tr>'
+    + '<tr><td>RY</td><td>' + a2s(p.ry) + '</td><td>arc-seconds</td></tr>'
+    + '<tr><td>RZ</td><td>' + a2s(p.rz) + '</td><td>arc-seconds</td></tr>'
+    + '<tr><td>Scale</td><td>' + (p.scale*1e6).toFixed(4) + '</td><td>ppm</td></tr></table>';
+  var rh = '<table><tr><th>#</th><th>Lat</th><th>Lon</th><th>E Act</th><th>N Act</th><th>E Pred</th><th>N Pred</th><th>dE</th><th>dN</th><th>d(m)</th></tr>';
   d.residuals.forEach(function(r){
-    var rc=r.res_combined,cls=rc<0.1?'good':rc<0.5?'warn':'bad';
-    rh+='<tr><td>'+r.point+'</td><td>'+r.lat+'</td><td>'+r.lon+'</td><td>'+r.e_actual+'</td><td>'+r.n_actual+'</td><td>'+r.e_predicted+'</td><td>'+r.n_predicted+'</td><td class="'+cls+'">'+r.res_e+'</td><td class="'+cls+'">'+r.res_n+'</td><td class="'+cls+'">'+r.res_combined+'</td></tr>';
+    var rc = r.res_combined, cls = rc < 0.1 ? 'good' : rc < 0.5 ? 'warn' : 'bad';
+    rh += '<tr><td>' + r.point + '</td><td>' + r.lat + '</td><td>' + r.lon + '</td>'
+      + '<td>' + r.e_actual + '</td><td>' + r.n_actual + '</td>'
+      + '<td>' + r.e_predicted + '</td><td>' + r.n_predicted + '</td>'
+      + '<td class="' + cls + '">' + r.res_e + '</td>'
+      + '<td class="' + cls + '">' + r.res_n + '</td>'
+      + '<td class="' + cls + '">' + r.res_combined + '</td></tr>';
   });
-  rh+='</table>';
-  document.getElementById('calResiduals').innerHTML=rh;
+  rh += '</table>';
+  document.getElementById('calResiduals').innerHTML = rh;
 }
 function applyCal(){
-  if(!calState.towgs84){alert('No calibration results. Run calibration first.');return;}
-  localStorage.setItem('geodetic_cal',JSON.stringify(calState));
+  if(!calState || !calState.towgs84){ alert('Run calibration first.'); return; }
+  localStorage.setItem('geodetic_cal', JSON.stringify(calState));
   patchFetch(); updateCalBadge();
-  alert('Calibration applied! All conversions now use the custom 7-param Helmert.\n\nRMS: '+calState.stats.rms_combined.toFixed(4)+' m');
+  alert('Calibration applied! Conversions now use 7-param Helmert.\nRMS: ' + calState.stats.rms_combined.toFixed(4) + ' m');
 }
 function clearCal(){
-  if(!confirm('Clear calibration? Conversions will revert to Molodensky 3-param.')) return;
-  calState={towgs84:null,params:null,stats:null};
+  if(!confirm('Clear calibration? Reverts to Molodensky 3-param.')) return;
+  calState = {towgs84:null, params:null, stats:null};
   localStorage.removeItem('geodetic_cal');
   updateCalBadge();
   document.getElementById('calResults').classList.remove('visible');
   alert('Calibration cleared.');
 }
 function exportCal(){
-  if(!calState.stats){alert('No results to export');return;}
-  var s=calState.stats,p=calState.params;
-  var a2s=function(r){return(r*180/Math.PI*3600).toFixed(4);};
-  var txt='Geodetic Knife - Calibration Report\n====================================\n\nStatistics:\n  Points: '+s.num_points+'\n  RMS E: '+s.rms_e+' m\n  RMS N: '+s.rms_n+' m\n  RMS Combined: '+s.rms_combined+' m\n  Scale: '+s.scale_ppm+' ppm\n\nParameters:\n  TX: '+p.tx.toFixed(4)+' m\n  TY: '+p.ty.toFixed(4)+' m\n  TZ: '+p.tz.toFixed(4)+' m\n  RX: '+a2s(p.rx)+'"\n  RY: '+a2s(p.ry)+'"\n  RZ: '+a2s(p.rz)+'"\n  Scale: '+(p.scale*1e6).toFixed(4)+' ppm\n\nPROJ towgs84:\n  '+s.towgs84+'\n';
-  var blob=new Blob([txt],{type:'text/plain'});
-  var a=document.createElement('a');
-  a.href=URL.createObjectURL(blob);
-  a.download='calibration_report.txt';
-  a.click();
+  if(!calState || !calState.stats){ alert('No results to export'); return; }
+  var s = calState.stats, p = calState.params;
+  var a2s = function(r){ return (r*180/Math.PI*3600).toFixed(4); };
+  var txt = 'Geodetic Knife - Calibration Report\n====================================\n\n'
+    + 'Statistics:\n  Points: ' + s.num_points + '\n  RMS E: ' + s.rms_e + ' m\n  RMS N: ' + s.rms_n + ' m\n'
+    + '  RMS Combined: ' + s.rms_combined + ' m\n  Scale: ' + s.scale_ppm + ' ppm\n\n'
+    + 'Parameters:\n  TX: ' + p.tx.toFixed(4) + ' m\n  TY: ' + p.ty.toFixed(4) + ' m\n  TZ: ' + p.tz.toFixed(4) + ' m\n'
+    + '  RX: ' + a2s(p.rx) + '"\n  RY: ' + a2s(p.ry) + '"\n  RZ: ' + a2s(p.rz) + '"\n'
+    + '  Scale: ' + (p.scale*1e6).toFixed(4) + ' ppm\n\nPROJ towgs84:\n  ' + s.towgs84 + '\n';
+  var blob = new Blob([txt], {type:'text/plain'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob); a.download = 'calibration_report.txt'; a.click();
 }
 function patchFetch(){
   if(window._origFetch) return;
-  window._origFetch=window.fetch;
-  window.fetch=function(url,opts){
-    if(calState.towgs84 && opts && opts.body){
-      try{
-        var parsed=JSON.parse(opts.body);
-        if(parsed.mode||(parsed.points&&parsed.points.length)){
-          parsed.calibration={towgs84:calState.towgs84};
-          opts.body=JSON.stringify(parsed);
+  window._origFetch = window.fetch;
+  window.fetch = function(url, opts){
+    if(calState && calState.towgs84 && opts && opts.body){
+      try {
+        var parsed = JSON.parse(opts.body);
+        if(parsed.mode || (parsed.points && parsed.points.length)){
+          parsed.calibration = {towgs84: calState.towgs84};
+          opts.body = JSON.stringify(parsed);
         }
-      }catch(e){}
+      } catch(e){}
     }
-    return window._origFetch.call(this,url,opts);
+    return window._origFetch.call(this, url, opts);
   };
   if(!window._origXHROpen){
-    var origOpen=XMLHttpRequest.prototype.open;
-    var origSend=XMLHttpRequest.prototype.send;
-    XMLHttpRequest.prototype.open=function(method,url){
-      this._calUrl=url;
-      return origOpen.apply(this,arguments);
-    };
-    XMLHttpRequest.prototype.send=function(body){
-      if(calState.towgs84 && body && this._calUrl && this._calUrl.indexOf('/api/')>-1){
-        try{
-          var parsed=JSON.parse(body);
-          if(parsed.mode||(parsed.points&&parsed.points.length)){
-            parsed.calibration={towgs84:calState.towgs84};
-            body=JSON.stringify(parsed);
+    var origOpen = XMLHttpRequest.prototype.open, origSend = XMLHttpRequest.prototype.send;
+    XMLHttpRequest.prototype.open = function(method, url){ this._calUrl = url; return origOpen.apply(this, arguments); };
+    XMLHttpRequest.prototype.send = function(body){
+      if(calState && calState.towgs84 && body && this._calUrl && this._calUrl.indexOf('/api/') > -1){
+        try {
+          var parsed = JSON.parse(body);
+          if(parsed.mode || (parsed.points && parsed.points.length)){
+            parsed.calibration = {towgs84: calState.towgs84}; body = JSON.stringify(parsed);
           }
-        }catch(e){}
+        } catch(e){}
       }
-      return origSend.call(this,body);
+      return origSend.call(this, body);
     };
-    window._origXHROpen=true;
+    window._origXHROpen = true;
   }
 }
 var _origSwitchTab = typeof switchTab !== 'undefined' ? switchTab : function(){};
 window.switchTab = function(tab){
   document.querySelectorAll('.tab-btn').forEach(function(btn){
-    var oc=btn.getAttribute('onclick')||'';
-    btn.classList.toggle('active',oc.indexOf("'"+tab+"'")>-1);
+    var oc = btn.getAttribute('onclick') || '';
+    btn.classList.toggle('active', oc.indexOf("'" + tab + "'") > -1);
   });
-  var cal=document.getElementById('calContainer');
-  if(tab==='calibration'){
-    document.querySelectorAll('.panel').forEach(function(p){p.style.display='none';});
-    if(cal){cal.style.display='block';cal.classList.add('active');}
+  var cal = document.getElementById('calContainer');
+  if(tab === 'calibration'){
+    document.querySelectorAll('.panel').forEach(function(p){ p.style.display = 'none'; });
+    if(cal){ cal.style.display = 'block'; cal.classList.add('active'); }
     return;
   }
-  if(cal){cal.style.display='none';cal.classList.remove('active');}
+  if(cal){ cal.style.display = 'none'; cal.classList.remove('active'); }
   _origSwitchTab(tab);
 };
 </script>
