@@ -1,4 +1,4 @@
-﻿# api/index.py — complete replacement with calibration support
+# api/index.py — complete replacement with calibration support
 
 import json
 import math
@@ -156,6 +156,7 @@ def _tm_inv(E, Ni):
     E1 = E-fe; M1 = Ni/k0
     mu = M1/(a*(1-e2/4-3*e2*e2/64-5*e2**3/256))
     e1 = (1-math.sqrt(1-e2))/(1+math.sqrt(1-e2))
+    e12 = e1*e1
     e12,e13,e14 = e1*e1, e12*e1, e13*e1
     p1 = (mu+(3*e1/2-27*e13/32)*math.sin(2*mu)+(21*e12/16-55*e14/32)*math.sin(4*mu)
          +(151*e13/96)*math.sin(6*mu)+(1097*e14/512)*math.sin(8*mu))
