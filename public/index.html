@@ -448,6 +448,14 @@ input.invalid:focus{box-shadow:0 0 0 3px var(--err-bg)!important}
 .text-center{text-align:center}.text-sm{font-size:12px}.text-xs{font-size:11px}
 .text-muted{color:var(--t3)}.text-sec{color:var(--t2)}
 .hidden{display:none!important}.w-full{width:100%}
+
+/* ========== EXPORT BAR ========== */
+.export-bar{display:flex;gap:6px;margin-top:12px;padding-top:10px;border-top:1px solid rgba(255,255,255,.06)}
+.file-drop{border:2px dashed var(--border);border-radius:var(--radius);padding:20px;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:10px}
+.file-drop:hover,.file-drop.dragover{border-color:var(--gold);background:var(--gold-dim)}
+.file-drop input[type=file]{display:none}
+.file-drop-icon{font-size:2rem;margin-bottom:6px;opacity:.6}
+.file-drop-text{font-size:.82rem;color:var(--muted)}
 </style>
 </head>
 <body class="themed">
