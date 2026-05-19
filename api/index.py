@@ -241,6 +241,11 @@ def calibrate():
     except ValueError as ex: return jsonify({"error":str(ex)}),400
     except Exception as ex: return jsonify({"error":f"Failed: {str(ex)}"}),500
 
+
+
+@app.route("/api/calibration_status", methods=["GET"])
+def calibration_status():
+    return jsonify({"status":"available","method":"7-param Helmert","min_points":3,"max_points":50})
 @app.route("/api/elevation", methods=["GET"])
 def elevation():
     try: lat=float(request.args.get("lat",0)); lon=float(request.args.get("lon",0))
