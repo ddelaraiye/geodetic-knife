@@ -2,6 +2,8 @@
 
 **Ghana Geodetic Transformation Tool**
 
+[Live Demo](https://geodetic-knife.netlify.app)
+
 A web-based coordinate transformation tool supporting conversion between WGS84 and Ghana's two primary grid systems: the Ghana National Grid (GNG) and the Ghana Metre Grid (GMG). Built with Flask (pyproj) backend and a responsive dark-theme UI.
 
 ---
